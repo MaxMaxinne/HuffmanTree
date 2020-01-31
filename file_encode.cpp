@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<unordered_map>
+#include"HuffmanTree.h"
 using namespace std;
 class FileEncoder{
 unordered_map<int,int> charmap;
@@ -20,5 +21,5 @@ public:
 int main(){
     FileEncoder f;
     f.FileInput();
-    cout<<int('\345')<<endl;
+    
 }
