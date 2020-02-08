@@ -1,7 +1,6 @@
-#include<iostream>
-#include<fstream>
 #include"HuffmanTree.h"
 using namespace std;
+
 unordered_map<char,int> charmap;
 HuffmanTree hfm;
 void fileInput(string filename){
@@ -30,6 +29,7 @@ void fileEncode(string filename){
         cerr<<"An error occured during opening file "<<filename<<endl;
         exit(10006);
     }
+    hfm.mapGenerate();
     char buffer=' ';
     uint32_t bytes=0;
     string binary;
@@ -44,13 +44,13 @@ void fileEncode(string filename){
         while(length<BYTES_LENGTH){
             if(p_remain<remain_len){
                 bytes<<=1;
-                bytes|=bi_remain[p_remain++];
+                bytes|=bi_remain[p_remain++]-'0';
                 length++;
                 continue;
             }
             if(p_bi<bi_len){
                 bytes<<=1;
-                bytes|=binary[p_bi++];
+                bytes|=binary[p_bi++]-'0';
                 length++;
                 continue;
             }
@@ -60,7 +60,7 @@ void fileEncode(string filename){
                     break;//将二进制移至高位
                 }
                 else{
-                    binary=charmap[buffer];
+                    binary=hfm.charmap[buffer];
                     p_bi=0;
                     bi_len=binary.length();
                 }
@@ -78,7 +78,6 @@ int main(){
     cin>>filename;
     fileInput(filename);
     hfm.treeBuild(charmap);
-    hfm.saveMap();
     hfm.saveTree();
     fileEncode(filename);
     return 0;

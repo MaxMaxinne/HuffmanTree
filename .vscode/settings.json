@@ -4,6 +4,8 @@
         "iostream": "cpp",
         "hash_map": "cpp",
         "ostream": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "memory": "cpp",
+        "sstream": "cpp"
     }
 }
