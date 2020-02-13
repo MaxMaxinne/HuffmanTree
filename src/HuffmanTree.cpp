@@ -124,16 +124,31 @@ void HuffmanTree::treeBuild(unordered_map<char,int>& map){
     }
     initialize(v);
 }
+void HuffmanTree::codemapGenerate_helpfunc(HuffmanNode* node,string n){
+    if(!node)
+        return;
+    if(node->character!=' '){
+        codemap[n]=node->character;
+        return;
+    }
+    if(node->left)
+        codemapGenerate_helpfunc(node->left,n+"0");
+    if(node->right)
+        codemapGenerate_helpfunc(node->right,n+"1");
+}
+void HuffmanTree::codemapGenerate(){
+    codemapGenerate_helpfunc(hNode,"");
+}
 void HuffmanTree::treeBuild(){
     hNode=nullptr;
-    ifstream input("hfmtree",ios::binary|ios::in);
+    ifstream input("hfmtree",ios::binary);
     if(!input.is_open()){
         cerr<<"An error occured during opening file hfmtree"<<endl;
         exit(10007);
     }
     vector<HuffmanNode_serialize> v;
     HuffmanNode_serialize buffer;
-    while(!input.read((char*)&buffer,sizeof(buffer)))
+    while(input.read((char*)&buffer,sizeof(buffer)))
         v.push_back(buffer);
     initialize(v);
     input.close();

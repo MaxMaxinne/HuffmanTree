@@ -5,8 +5,11 @@
             "label": "g++.exe build active file",
             "command": "D:\\mingw64\\bin\\g++.exe",
             "args": [
+                "-I",
+                "${fileDirname}\\..\\include",
                 "-g",
                 "${file}",
+                "${fileDirname}\\HuffmanTree.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

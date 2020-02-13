@@ -9,3 +9,4 @@ clean:
 cleandata:
 	del codefile
 	del hfmtree
+	del textfile.txt
