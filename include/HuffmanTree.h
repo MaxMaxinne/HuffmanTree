@@ -8,7 +8,7 @@
 #include<vector>
 #include<fstream>
 using namespace std;
-//errorcode:10010
+//errorcode:10014
 
 class HuffmanNode{
 public:
@@ -36,18 +36,15 @@ private:
     unordered_map<char,string> charmap;
     int size;
     void initialize(vector<HuffmanNode*>&);
-    void initialize(vector<HuffmanNode_serialize>&);
     void mapGenerate_helpfunc(string,HuffmanNode*);
+    void initialize(vector<HuffmanNode_serialize>&);
     int setIndex();
+    int getHeight(HuffmanNode*);
     void codemapGenerate_helpfunc(HuffmanNode*,string);
 public:
     friend void fileEncode(string);
     friend void fileDecode();
-    void mapGenerate(){
-        if(!hNode)
-            return;
-        mapGenerate_helpfunc("",hNode);
-    }
+    friend void treeDisplay();
     ~HuffmanTree(){
         queue<HuffmanNode*> q;
         q.push(hNode);
@@ -61,9 +58,16 @@ public:
             delete node;
         }
     }
-    void saveTree();
-    void treeBuild(unordered_map<char,int>&);
+    void midOrder(HuffmanNode*,string&);
+    int height(){return getHeight(hNode);}
     void treeBuild();
     void codemapGenerate();
+    void mapGenerate(){
+        if(!hNode)
+            return;
+        mapGenerate_helpfunc("",hNode);
+    }
+    void saveTree();
+    void treeBuild(unordered_map<char,int>&);
 };
 #endif

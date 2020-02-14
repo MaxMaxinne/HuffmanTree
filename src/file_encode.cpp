@@ -3,14 +3,14 @@ using namespace std;
 
 unordered_map<char,int> charmap;
 HuffmanTree hfm;
-void fileInput(string filename){
+void weightCount(string filename){
     ifstream input;
     input.open(filename);
     if(!input.is_open()){
         cerr<<"An error occured during opening file "<<filename<<endl;
         exit(10000);
     }
-    char buffer=' ';
+    char buffer='\0';
     while(input.get(buffer)){
         auto iter=charmap.find(buffer);
         if (iter!=charmap.end())
@@ -30,13 +30,19 @@ void fileEncode(string filename){
         exit(10006);
     }
     hfm.mapGenerate();
-    char buffer=' ';
+    char buffer='\0';
     uint32_t bytes=0;
     string binary;
     string bi_remain;
     int length=0,remain_len=0,bi_len=0,p_remain=0,p_bi=0;
+    uint8_t finalLen=0;
     while(input.get(buffer)){//可能出现buffer被顶替
-        binary=hfm.charmap[buffer];
+        auto iter=hfm.charmap.find(buffer);
+        if(iter==hfm.charmap.end()){
+            cerr<<"weight of character \""<<buffer<<"\" not found!"<<endl;
+            exit(10013);
+        }
+        binary=iter->second;
         bi_len=binary.length();
         remain_len=bi_remain.length();
         length=0;
@@ -71,12 +77,43 @@ void fileEncode(string filename){
         p_remain=p_bi;
         bytes=0;
     }
+    finalLen=length;
+    output.write((char*)&finalLen,sizeof(finalLen));
     output.close();
 }
-int main(){
+void getWeight(){
+    cout<<"please enter the weights in the format \"character:weight\"."<<endl;
+    cout<<"different pairs of characters and weights must be on different lines."<<endl;
+    cout<<"enter \"0\" to stop"<<endl;
+    string buffer;
+    while(cin>>buffer){
+        if(buffer.length()>=3&&buffer[1]==':'){
+            charmap[buffer[0]]=stoi(buffer.substr(2));
+        }else{
+            if(buffer.length()==1&&buffer[0]=='0')
+                break;
+            else{
+                cerr<<"illegal characters"<<endl;
+                exit(10011);
+            }
+        }
+    }
+}
+int main(int argv,char** argc){
     string filename;
-    cin>>filename;
-    fileInput(filename);
+    if(argv==2){
+        filename=argc[1];
+        getWeight();
+    }
+    else{
+        if(argv==3&&string(argc[2])=="--autocount"){
+            filename=argc[1];
+            weightCount(filename);
+        }else{
+            cerr<<"illegel command.Read ReadMe.md for more information"<<endl;
+            exit(10012);
+        }
+    }
     hfm.treeBuild(charmap);
     hfm.saveTree();
     fileEncode(filename);

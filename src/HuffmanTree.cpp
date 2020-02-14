@@ -13,7 +13,7 @@ void HuffmanTree::initialize(vector<HuffmanNode*>& v){
         HuffmanNode* n2=v[0];
         pop_heap(v.begin(),v.end(),cmp);
         v.pop_back();
-        HuffmanNode* node_new=new HuffmanNode(n1->weight+n2->weight,' ',n1,n2);
+        HuffmanNode* node_new=new HuffmanNode(n1->weight+n2->weight,'\0',n1,n2);
         v.push_back(node_new);
         push_heap(v.begin(),v.end(),cmp);
     }
@@ -49,7 +49,7 @@ void HuffmanTree::initialize(vector<HuffmanNode_serialize>& v){
 void HuffmanTree::mapGenerate_helpfunc(string n,HuffmanNode* node){
     if(!node)
         return;
-    if(node->character!=' '){
+    if(node->character!='\0'){
         charmap[node->character]=n;
         return;
     }
@@ -112,6 +112,19 @@ void HuffmanTree::saveTree(){
     writer.close();
     delete []array;
 }
+void HuffmanTree::midOrder(HuffmanNode* node,string& mid){
+    if(node){
+        midOrder(node->left,mid);
+        mid.push_back(node->index);
+        midOrder(node->right,mid);
+    }
+}
+int HuffmanTree::getHeight(HuffmanNode* node){
+    if(!node)
+        return 0;
+    int left=getHeight(node->left),right=getHeight(node->right);
+    return left>right?left+1:right+1;
+}
 void HuffmanTree::treeBuild(unordered_map<char,int>& map){
     hNode=nullptr;
     int p=0;
@@ -127,7 +140,7 @@ void HuffmanTree::treeBuild(unordered_map<char,int>& map){
 void HuffmanTree::codemapGenerate_helpfunc(HuffmanNode* node,string n){
     if(!node)
         return;
-    if(node->character!=' '){
+    if(node->character!='\0'){
         codemap[n]=node->character;
         return;
     }
