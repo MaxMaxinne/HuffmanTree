@@ -5,7 +5,7 @@ using namespace std;
 HuffmanTree hfm;
 void codeDisplay(string code){
     static int code_num=0;
-    static ofstream output("codeprint.txt);
+    static ofstream output("codeprint.txt");
     output<<code;
     cout<<code;
     code_num++;
