@@ -114,8 +114,10 @@ int main(int argv,char** argc){
             exit(10012);
         }
     }
+    cout<<"Start Processing..."<<endl;
     hfm.treeBuild(charmap);
     hfm.saveTree();
     fileEncode(filename);
+    cout<<"Done!"<<endl;
     return 0;
 }

@@ -9,7 +9,7 @@
                 "${fileDirname}\\..\\include",
                 "-g",
                 "${file}",
-                //"${fileDirname}\\HuffmanTree.cpp",
+                "${fileDirname}\\HuffmanTree.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

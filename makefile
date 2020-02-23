@@ -10,3 +10,5 @@ cleandata:
 	del codefile
 	del hfmtree
 	del textfile.txt
+	del treeprint.txt
+	del codeprint.txt

@@ -5,10 +5,14 @@ using namespace std;
 HuffmanTree hfm;
 void codeDisplay(string code){
     static int code_num=0;
+    static ofstream output("codeprint.txt);
+    output<<code;
     cout<<code;
     code_num++;
-    if(code_num%50==0)
+    if(code_num%50==0){
         cout<<endl;
+        output<<endl;
+    }
 }
 void treeDisplay(){
     ofstream output("treeprint.txt");
@@ -16,11 +20,12 @@ void treeDisplay(){
         cerr<<"An error occured during writing treeprint.txt"<<endl;
         exit(10011);
     }
+    cout<<"Printing Tree..."<<endl;
     queue<HuffmanNode*> q;
     q.push(hfm.hNode);
     string mid;
     hfm.midOrder(hfm.hNode,mid);
-    int spacenum=2<<(hfm.height()+1);//最后一层空白字符个数
+    int spacenum=2<<(hfm.height()-1);//最后一层空白字符个数
     while (!q.empty()){
         vector<HuffmanNode*> cache;
         while (!q.empty()){
@@ -34,7 +39,8 @@ void treeDisplay(){
             if (p){
                 int index=mid.find((char)p->index);
                 if(p->character=='\0')
-                    line.insert(index,to_string(p->weight));
+                    //line.insert(index,to_string(p->weight));
+                    line[index]='*';
                 else
                     line[index]=p->character;
                 if(p->left){
@@ -73,6 +79,7 @@ void fileDecode(){
     bool isfinal=false;
     uint32_t buffer=0;
     string code="";
+    cout<<"Printing Code..."<<endl;
     while(input.read((char*)&buffer,sizeof(buffer))){
         bitset<sizeof(buffer)*BYTE> bit(buffer);
         string bytes=bit.to_string();
